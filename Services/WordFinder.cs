@@ -17,6 +17,9 @@ namespace Words.Services
             if (matrix == null || !matrix.Any())
                 throw new ArgumentNullException(nameof(matrix));
 
+            if (matrix.Count() > 64)
+                throw new MaximumMatrixException();
+
             var isMatrixValid = from row in matrix
                                 where row.Count() != matrix.Count()
                                 select true;
