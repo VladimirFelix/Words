@@ -24,7 +24,7 @@ namespace Words.Services
                                 where row.Count() != matrix.Count()
                                 select true;
 
-              var isInvalid = isMatrixValid.Any(a => a);
+            var isInvalid = isMatrixValid.Any(a => a);
 
             if (isInvalid)
                 throw new InvalidMatrixLengthException();
@@ -34,35 +34,44 @@ namespace Words.Services
         {
             List<string> foundWords = new List<string>();
 
+            foundWords.AddRange(GetHorizontallyWords(wordstream));
 
+            foundWords.AddRange(GetVerticallyWords(wordstream));           
+
+            return foundWords.Distinct().Take(10);
+        }
+
+        private IEnumerable<string> GetVerticallyWords(IEnumerable<string> wordstream)
+        {
+            var itemCount = 0;
+            List<string> words = new List<string>();
+            while (itemCount < matrix.Count())
+            {
+                var word = from matrixItem in matrix
+                           from charItem in matrixItem[itemCount].ToString()
+                           select charItem;
+
+                var mianWord = new string(word.ToArray());
+
+                var verticalQuery = from searchWord in wordstream
+                                    where mianWord.ToLower().Contains(searchWord.ToLower())
+                                    select searchWord;
+
+                words.AddRange(verticalQuery);
+
+                itemCount++;
+            }
+            return words;
+        }
+
+        private IEnumerable<string> GetHorizontallyWords(IEnumerable<string> wordstream)
+        {
             var horizontalQuery = from rows in matrix
                                   from word in wordstream
                                   where rows.ToLower().Contains(word.ToLower())
                                   select word;
 
-            foundWords.AddRange(horizontalQuery);
-
-            var itemCount = 0;
-            while (itemCount < matrix.Count())
-            {
-                var word = from item in matrix
-                           from wi in item[itemCount].ToString()
-                           select wi;
-
-                var palabra = new string(word.ToArray());
-
-                var verticalQuery = 
-                                    from stream in wordstream
-                                    where palabra.ToString().ToLower().Contains(stream.ToLower())
-                                    select stream;
-
-                foundWords.AddRange(verticalQuery);
-
-
-                itemCount++;
-            }
-
-            return foundWords.Distinct().Take(10);
+            return horizontalQuery;
         }
     }
 }

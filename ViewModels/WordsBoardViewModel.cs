@@ -38,10 +38,10 @@ namespace Words.ViewModels
                 if (results.Any())
                 {
                     Results = new ObservableCollection<string>(results);
-                    ResultText = $"{Results.Count} items found in {(long)(endDate - startDate).TotalMilliseconds} miliseconds";
+                    ResultText = $"{Results.Count} words found in {(long)(endDate - startDate).TotalMilliseconds} miliseconds";
                 }
                 else
-                    ResultText = "Not found";
+                    ResultText = "No words found";
 
             }
             catch (ArgumentNullException nullEx)
