@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Words.Views.WordsBoardView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="mainView">
+
+    <Grid ColumnDefinitions="Auto,*" HorizontalOptions="Center">
+
+        <Button
+            Margin="20,0"
+            Command="{Binding ShowResultsCommand}"
+            Text="Show Words Results"
+            VerticalOptions="Center" />
+
+        <VerticalStackLayout
+            Grid.Column="1"
+            Margin="0,20"
+            VerticalOptions="Center">
+
+            <Label Text="Results" />
+
+            <CollectionView ItemsSource="{Binding Results}">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="25"
+                            Text="{Binding}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="{Binding ResultText}" />
+
+        </VerticalStackLayout>
+
+
+    </Grid>
+
+</ContentPage>
